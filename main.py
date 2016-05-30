@@ -1,7 +1,10 @@
 import os
 from tornado.options import define, options
 
+import models
+
 define('host', default='localhost:5432', help='Database host')
+define('db_name', default='postgres', help='Name of database to connect')
 define('db_user', default='postgres', help='User for database')
 define('db_password', default='123456', help='Database password')
 define('test_time', default=60, help='Time of test running in seconds')
@@ -16,6 +19,8 @@ if options.conf_file is not None and os.path.exists(options.conf_file):
 
 
 def main():
+    engine = models.get_engine(**options.as_dict())
+    models.Base.metadata.create_all(engine)
     raise NotImplementedError
 
 
