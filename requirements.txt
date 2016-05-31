@@ -1,3 +1,6 @@
 tornado
 sqlalchemy
 psycopg2
+ipython[all]
+matplotlib
+pandas
