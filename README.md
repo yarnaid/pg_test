@@ -2,7 +2,7 @@
 
 Simple tornado client imitator for PostgreSQL.
 
-# Installation
+# Installation & Run
 
 It's better to be installed inside virtualenv.
 
