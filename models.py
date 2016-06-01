@@ -6,6 +6,7 @@ import contextlib
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, Date
 from sqlalchemy import create_engine, MetaData
+from sqlalchemy.sql import text
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 Base = declarative_base()
@@ -37,14 +38,9 @@ class TestTable(Base):
         str_ = uuid4()
         val = randint(-cls._rand_lim, cls._rand_lim)
         res = cls(str_field=str_, dt_field=day, value=val)
-        session.add(res)
         return res
 
     @classmethod
-    def truncate(cls, engine):
-        meta = MetaData()
-        with contextlib.closing(engine.connect()) as con:
-            trans = con.begin()
-            for table in meta.sorted_tables:
-                con.execute(table.delete())
-            trans.commit()
+    def truncate(cls, session):
+        session.execute('TRUNCATE {}'.format(cls.__tablename__))
+        session.commit()
